@@ -1,1 +1,0 @@
-void Push(int element);
