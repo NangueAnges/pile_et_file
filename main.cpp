@@ -1,123 +1,143 @@
-#include<iostream>//bibliotheque permettant de gerer les entrees et les sorties
-#include<vector>//bibliotheque permettant de gerer le tableau dynamique vector
-#include<string>//bibliotheque permettant de gerer tous les types 
+#include<iostream>
+#include<vector>
+#include<string>
 
-//structure de donnee pour gerer les element, leur type et leur valeur
+
+/*
+    - structure representant un element de la file.
+    - chaque element possede un type (int, float, string) et une valeur 
+stockee sous forme de chaine de caracteres 
+*/
 struct Element {
     std::string type;
     std::string value;
 };
 
-std::vector<Element> pile;//stucture de donnee pour gerer les pile
-std::vector<Element> file;//structure de donnee pour gerer les files
 
-// Fonction pour ajouter un élément à la fin de la pile
+std::vector<Element> pile;//declaration de la pile sous forme d'un tableau dynamique
+std::vector<Element> file;//declaration de la file sous forme d'un tableauu dynamique
+
+
+/*
+    - ajoute un element dans la pile 
+    en demandant a l'utilisateur le 
+    type et la valeur a inserer.
+*/
 void Push(){
     std::string type;
     std::cout << "Quel type d'element souhaitez-vous utiliser? (int, float, string) \n";
     std::cin >> type;
-
-//creation d'un nouvel element de la pile
     Element element; 
-    element.type = type;//stocke le type choisi par l'utilisateur (int, float ou string)
+    element.type = type;
 
+//demande et conversion de la valeur a partir du type choisi
     if (type == "int"){
-        int val;//variable pour stocker un entier temporairement
+        int val;
         std::cout << "Entrer un entier au choix \n";
-        std::cin >> val;//saisir de l'entier par l'utilisateur
-        element.value = std::to_string(val); // Conversion de l'entier en string(chaine de caracteres)
+        std::cin >> val;
+        element.value = std::to_string(val);
     } 
     else if (type == "float"){
-        float val;//variable pour stocker un flottant temporairement
+        float val;
         std::cout << "Entrer un flottant au choix \n";
-        std::cin >> val;//saisir du flottant par l'utilisateur
-        element.value = std::to_string(val); // Conversion du flottant en string(chaine de caractere)
+        std::cin >> val;
+        element.value = std::to_string(val); 
     } 
     else if(type == "string"){
-        std::string val;//variable pour stocker une chaine de caractere temporairement
+        std::string val;
         std::cout << "Entrer une chaine de caractères au choix \n";
-        std::cin.ignore(); // Ignorer le caractere de retour à la ligne
+        std::cin.ignore(); // Ignore le retour à la ligne precedent pour eviter un bug avec getline()
         std::getline(std::cin, val);//recupere toute la ligne de texte saisir par l'utilisateur
-        element.value = val;//stocke directement la chaine de caractere
+        element.value = val;
     } 
     else {
-        //affiche ce message au cas ou le type entrer par l'utilisateur est invalide
         std::cout << "Type invalide !!!! \n";
-        return; //sort de la fonction sans ajouter l'element
+        return; 
     }
-//ajoute l'element dans la pile
+//ajout de l'element dans la pile
     pile.push_back(element);
-    std::cout << "L'element est ajoute à la pile ! \n";
+    std::cout << "L'element est ajoute a la pile ! \n";
 }
 
 
 
-// Fonction pour retirer un élément à la fin de la pile
+/*
+    - Retire et affiche l'element de la fin de la pile (LIFO).
+    - Si la pile est vide, un message est affiche.
+*/
 void Pop(){
-    if (pile.empty()){//verifie si la pile est vide
+    if (pile.empty()){
         std::cout << "La pile est vide... aucun element à retirer !!! \n";
     } else {
-        Element element = pile.back(); // Accède directement au dernier élément de la pile et le recupere  
-        pile.pop_back(); // Supprime le dernier élément de la pile
+        Element element = pile.back(); 
+        pile.pop_back();
         std::cout << "Le dernier element de la pile retire est : ";
-        if (element.type == "int"){//verifie si le dernier element est un entier
-            std::cout << stoi(element.value) << "(int)\n";//passe la chaine de caracteres contenant 
-                                                          //un nombre entier en une variable de 
-                                                          //type int ( "42" devient 42 )
+        if (element.type == "int"){
+            std::cout << stoi(element.value) << "(int)\n";
         } else if (element.type == "float"){
-            std::cout << stof(element.value) << "(float)\n";//(string to float)
-                                                            //pareillement, mais avec les flottants ( "3,4" devient 3,4 )
+            std::cout << stof(element.value) << "(float)\n";
         } else if (element.type == "string"){
             std::cout << element.value << "(string)\n";
         }
     }
 }
 
-// Fonction pour ajouter un élément à la fin de la file
+
+
+
+/*
+    - Ajoute un element dans la file en 
+    demandant a l'utilisateur le type 
+    et la valeur a inserer.
+*/
 void enqueueFile(){
     std::string type;
     std::cout << "Quel type de valeurs souhaitez-vous manipuler ?(int, float, string) \n";
     std::cin >> type;
-
-//creation d'un nouvel element de la file
     Element element; 
-    element.type = type;//stocke le type d'element choisi par l'utilisateur
+    element.type = type;
+
+//demande et conversion de la valeur en fonction du type choisi
     if (type == "int"){
-        int val;//variable pour stocker temporairement un entier 
+        int val;
         std::cout << "Entrer un entier \n";
-        std::cin >> val;//recupere l'element saisi par l'utilisateur
-        element.value = std::to_string(val);//convertir l'entier en chaine de caractere
+        std::cin >> val;
+        element.value = std::to_string(val);
     } else if (type == "float"){
-        float val;//variable pour stocker un flottant te;porairement
+        float val;
         std::cout << "Entrer un flottant au choix \n";
-        std::cin >> val;//recupere le flottant saisi par l'utilisateur
-        element.value = std::to_string(val);//convertir le flottant en chaine de caractere
+        std::cin >> val;
+        element.value = std::to_string(val);
     } else if (type == "string"){
-        std::string val;//variable pour stocker temporairement une chaine de caractere 
+        std::string val;
         std::cout << "Entrer une chaine de caracteres \n";
-        std::cin.ignore(); //ignorer le caractere de retour à la ligne
-        std::getline(std::cin, val);//recupere toute la ligne de texte saisir par l'utilisateur
+        std::cin.ignore(); 
+        std::getline(std::cin, val);   
         element.value = val;
     } else {
-//affiche ce message au cas ou l'utilisateur ne fait aucun choix valide
         std::cout << "Type invalide !!! \n";
-        return;//sort de la fonction sans ajouter l'element
+        return;
     }
-//ajoute l'element a la fin de la file
+//ajout de l'element a la fin de la file
     file.push_back(element);
     std::cout << "L'element est ajouté \n";
 }
 
 
-// Fonction pour retirer un élément au début de la file
+
+/*
+    - Retire et affiche l'element en tete de la file (FIFO).
+    - si la file est vide, un message est affiche.
+*/
 void dequeueFile (){
-    if (file.empty()){//verifie si la file est vide
+    if (file.empty()){
         std::cout << "La file est vide \n";
     } else {
-        Element first = file.front(); // Identifie et récupère le premier élément de la file
-        file.erase(file.begin()); // Supprime cet élément de la file
+    
+//recupere et supprime l'element en tete de la file
+        Element first = file.front(); 
+        file.erase(file.begin());
         std::cout << "Le premier element retire est : ";
-//verifie le type du premier element de la file
         if (first.type == "int"){
             std::cout << stoi(first.value) << "(int)\n";//(permet de quitter de "42" a 42)
         } else if (first.type == "float"){
@@ -129,19 +149,24 @@ void dequeueFile (){
 }
 
 
-// Fonction permettant d'afficher les éléments contenus dans la pile
+
+
+/* 
+    - affiche le contenu actuel de la pile.
+    - i la file est vide, un message est affiche.
+*/
 void afficheEtatP(){
-    if(pile.empty()) {//verifie si la pile est vide
+    if(pile.empty()) {
         std::cout << "La pile est vide !! \n";
     } else {
         std::cout << "Le contenu de la pile est : \n";
-        std::cout << "Pile = [ Top = ";//ouvre l'affichage de la pile
-        for(int i = (pile.size() - 1); i >= 0; i--) { // Parcours la pile du sommet à 
-                                                      //la base et affiche l'element sans la virgule a le fin
-            if (i != (pile.size() - 1)){//verifie que l'element n'est pas le dernier 
-                std::cout <<" , ";//ajoute une virgule si ce n'est pas le dernier element
+        std::cout << "Pile = [ Top = ";
+        for(int i = (pile.size() - 1); i >= 0; i--) {
+            if (i != (pile.size() - 1)){
+                std::cout <<" , ";
             }
-        std::cout <<pile[i].value<<" ";//ajoute la valeur de l'element saisir par l'utilisateur
+        std::cout <<pile[i].value<<" ";
+
 //ajoute le type d'element entrer par l'utilisateur en plus de sa valeur(34 (int)) 
             if (pile[i].type == "int"){
                 std::cout << "(int)";
@@ -151,25 +176,27 @@ void afficheEtatP(){
                 std::cout << "(string)";
             }
         }
-        std::cout << "]\n";//ferme l'affichage de la pile
+        std::cout << "]\n";
     }
 }
 
 
-// Fonction permettant d'afficher les éléments de la file
+
+/*
+    - Affiche le contenu actuel de la file
+    - si la file est vide, un message est affiche.
+*/
 void afficheEtatF(){
-    if (file.empty()){//verifie si la file est vide
+    if (file.empty()){
         std::cout << "La file est vide !!!! \n";
     } else {
         std::cout << "Le contenu de la file est : \n";
-        std::cout << "File = [ Front = ";//ouvre l'affichage de la file
+        std::cout << "File = [ Front = ";
         for(size_t i = 0; i < file.size(); i++) { // size_t est un type entier non signé
-                                                  //parcours la file du debut a la fin et
-                                                  //affiche l'element sans virgule a la fin
-            if (i != 0){//verifie s'il ne s'agit pas du premier element
-            std::cout << " , ";//affiche une virgule sauf avant le premier element
+            if (i != 0){
+            std::cout << " , ";
             }
-        std::cout << file[i].value << " ";//ajoute la valeur de l'entier saisir par l'utilisateur
+        std::cout << file[i].value << " ";
 //verifie le type de l'element et l'affiche 
             if (file[i].type == "int"){
                 std::cout << "(int)";
@@ -179,12 +206,22 @@ void afficheEtatF(){
                 std::cout << "(string)";
             }
         }
-        std::cout << "]\n";//ferme l'affichage de la file 
+        std::cout << "]\n"; 
     }
 }
 
 
-// Fonction principale du programme
+
+/*
+    - fonction principale qui lance
+    le programme et le menu principal 
+    proposant des options disponibles pour
+    manipuler la file
+    - elle gere egalement l'interaction 
+    utilisateur avec le menu principal
+    - l'utilisateur peut ajouter, retirer
+    et afficher les elements de la file
+*/
 int main(int argc, char** argv) {
     std::cout << "BIENVENUE DANS CETTE APPLICATION BASEE SUR L'IMPLEMENTATION DES PILES ET DES FILES DANS UN TABLEAU DYNAMIQUE \n";
     
@@ -200,7 +237,7 @@ int main(int argc, char** argv) {
         std::cin >> choix;
 
         if (choix == 1) {
-            // affiche le Sous-menu de la PILE lorsque l'utilisateur choisir lq premiere option
+            // affiche le Sous-menu de la PILE lorsque l'utilisateur choisir la premiere option
             int action;
             while (true) {
                 std::cout << "\n      SOUS MENU PILE \n";
@@ -223,7 +260,10 @@ int main(int argc, char** argv) {
                     std::cout << "Choix invalide \n";
                 }
             }
-        } else if (choix == 2) {
+        } 
+        
+        
+        else if (choix == 2) {
             //affiche le Sous-menu de la FILE lorsque l'utilisateur choisir la deuxieme option
             int action;
             while(true) {
@@ -247,11 +287,17 @@ int main(int argc, char** argv) {
                     std::cout << "Choix invalide. \n";
                 }
             }
-        } else if (choix == 3) {
+        }
+        
+        
+         else if (choix == 3) {
             //affiche ce message lorsque l'utiisateur choisit la troisieme option
             std::cout << "AUREVOIR!!! \n";
             break; // Quitte la boucle principale
-        } else {
+        }
+        
+        
+         else {
             //affiche ce message au cas ou l'utitlisateur fait un choix non correspondant
             std::cout << "Choix invalide \n";
         }
